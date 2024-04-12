@@ -1,8 +1,6 @@
 /**********************************************************
-* Proj2: Six Degrees
-* Comp 15
+* Six Degrees
 * Walter Wagude
-* 12/07/2021
 * README
 *
 *********************************************************/
@@ -52,16 +50,6 @@ Program Purpose:
     first artist to the second via musical collaborations. Depending on the
     input and which traversal the program uses, some restrictions apply.
     More about the implementation in Data Structure subtopic below
-
-
-Acknowledgements:
- 
- Reviewed the lecture slides on graph traversals - the pseudocodes on the
- slides were very useful. Discussed my Design with a Cs15 TA - their feedback
- helped me manage my time better and have a better understanding of the
- project and the possible edge cases. Used the reference links on the website
- to learn more about unordered maps and how to use them. Constantly checking
- piazza helped me identify edge cases.
 
 Files:
 
@@ -239,8 +227,7 @@ Testing:
       the artists in the exclude list were vertices - were on the graph then
       printed out the appropriate message in the case that they were not.
     
-QUESTIONS:
-1. What is the difference between BFS and DFS? What are their
+The difference between BFS and DFS? What are their
 pros/cons?
 
 BFS - Breadth First Search is used to find the shortest path between two 
@@ -256,8 +243,7 @@ vertices, visited vertices are popped. In DFS, it does not necessarily find
 the shortest path so might traverse through more edges to reach the 
 destination vertex. It is faster than BFS
 
-
-2. State what you think your runtime is for each of the commands
+Runtime for each of the commands
 (excluding quit) commands and why.
 
 For bfs, I think the time complexity is O(V^2) because the neighbors/siblings
@@ -270,13 +256,3 @@ artists then their neighbors.
 I think the not command also has O(V^2). It is very similar to bfs only that
 the artists in the list of exclude artists are marked before the traversal
 and the traversal takes more time.
-    
-Time spent:
-
-For phase1:
-
-6 hours
-
-For phase2:
-
-9 hours
