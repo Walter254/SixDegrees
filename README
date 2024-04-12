@@ -1,0 +1,282 @@
+/**********************************************************
+* Proj2: Six Degrees
+* Comp 15
+* Walter Wagude
+* 12/07/2021
+* README
+*
+*********************************************************/
+
+Compile/run:
+
+For phase1:
+    For the testing files
+    - Compile TestingcollabGraph.cpp using
+            clang++ -Wall -Wextra -Werror TestingCollabGraph.cpp /
+                                          Artist.cpp CollabGraph.cpp
+
+    - run executable with
+            ./a.out testfile
+            where testfile is the file with the artists you want to populate
+            your graph
+            
+    In order to run the program
+    - Compile using
+            make
+    - run using ./SixDegrees ...(other arguments as desired but must include
+    the file with the artists and the arguments must be less than four and 
+    more than two)
+    
+For phase2:
+
+    In order to compile and run the program:
+    - compile using
+        make
+    - run executable using
+        ./SixDegrees dataFile [commandsFile] [outputFile]
+        where: - dataFile is an input file containing information about 
+                 artists
+               - commandsFile (optional) is a second input file containing
+                 commands to execute. If this parameter is not given, 
+                 the program reads input from std::cin.
+               - outputFile (optional) is an output file. If provided,
+                 SixDegrees will send search results to this file.
+                 If this parameter is not given, then you must send output 
+                 to the standard output stream (std::cout).
+
+
+Program Purpose:
+
+    The Six Degrees program interactively accepts queries in the form of an
+    input command and the names of artists. It then outputs a path from the 
+    first artist to the second via musical collaborations. Depending on the
+    input and which traversal the program uses, some restrictions apply.
+    More about the implementation in Data Structure subtopic below
+
+
+Acknowledgements:
+ 
+ Reviewed the lecture slides on graph traversals - the pseudocodes on the
+ slides were very useful. Discussed my Design with a Cs15 TA - their feedback
+ helped me manage my time better and have a better understanding of the
+ project and the possible edge cases. Used the reference links on the website
+ to learn more about unordered maps and how to use them. Constantly checking
+ piazza helped me identify edge cases.
+
+Files:
+
+main.cpp
+
+     Creates an instance of SixDegrees called six_degrees then calls 
+     populate_collabGraph function and command_loop function. 
+     Theses are member functions of SixDegrees class. command_loop
+     takes inputs and executes them are necessary.
+
+
+CollabGraph.cpp:
+
+     Implements the collabGraph class interface to:
+     Represent a collaboration graph of artists, where each artist is
+     a vertex and an edge between two artists is a song in which those
+     artists have collaborated.
+     
+CollabGraph.h
+
+     Interface of CollabGraph which:
+     Represents a collaboration graph of artists, where each artist is
+     a vertex and an edge between two artists is a song in which those
+     artists have collaborated.
+
+SixDegrees.cpp:
+
+     Implements the SixDegrees class interface to:
+     Populate the CollabGraph and execute a sequence of commands, and
+     outputs the results. runs the command loop 
+
+SixDegrees.h:
+
+     Interface of SixDegrees.
+     Has an instance of CollabGraph object. Has functions that help to
+     populate and navigate the collabgraph class.
+     
+TestingCollabGraph.cpp
+
+     A testing file for CollabGraph functions. It has a main which makes it
+     easier to either directly or indirectly call a function to be tested, 
+     Main also enables us to print to command line.
+
+Testcommand_loop.txt:
+
+     sample list of commands that you could give as a command from a file
+
+Testpopulate_collabgraph.txt
+
+     sample list of artists and their songs
+     
+artists.txt
+ 
+     sample list of artists and their songs provided
+     
+Makefile:
+     For compilation purposes
+          
+Data Structures and Algorithm:
+     
+     In order to implement a graph and traverse through it,
+     this program uses, vector, queue, stack, and unordered_map data 
+     structures . The populate_graph function takes a vector of artists and 
+     populates the graph based on the artists in the vector. A vector works
+     well in this case because its' size can always increase - you do not
+     need to initialize the size - this is important because it does not 
+     restrict the user from how many artists they can put in the graph.
+     It is important for the same reason in get_vertex_neighbors function 
+     because it does not limit how many neighbors can be stored. A vector also
+     gives us access to all the elements in it hence easier to check with a 
+     a quick iteration. The report_path function uses a stack to store the 
+     path between two artists. With the starting artist being at the top, 
+     stack allows the program to access this top element -- do something to
+     it or not then only accept the second element after popping the first
+     one. A stack in this case behaves similarly to a queue where you can 
+     only access the top or front element. Since the order of artists in the 
+     stack matters, I had to come up with a way to make sure the destination 
+     artist is at the bottom of the stack and the starting artist at the top.
+     the program uses breadth first traversal and depth first traversals to
+     set predecessors and traverse the graph. I used a queue and a vector to
+     implement both bfs and not functions - not is very similar to bfs only 
+     that it takes a list of artists to be excluded from the path. the queue 
+     stores artists to be explored and the vector stores the neighbors of the
+     artist being explored. the neigbors predecessors are set then they are 
+     added to the queue and the loop continues until all the artists are
+     marked. In the not function, the artists to be excluded are first marked
+     before traversing the graph. For the dfs function, I use recursion to 
+     implement it, this is because we do not necessary need the shortest 
+     path between the two artist. the dfs algorithm goes as deep as it can
+     in the graph.
+     Once implemented, the graph data structure turns out to be very powerful:
+     - It allows us to iterate through the nodes/vertices and their neighbors
+     efficiently.
+     - the bfs function of the program helps the user find one of the shortest
+       paths between artists quickly
+
+Testing:
+
+    - Testing for Input and Output Behavior
+    
+      I tested that my program was handling the inputs from the command line 
+      and printing out to the right output stream as determined by the 
+      command line arguments, in TestingCollabGraph.cpp.
+      
+      after running TestingCollabGraph.cpp on terminal, I played around with 
+      different numbers of arguments and made sure that the program was 
+      printing out the expected message whenever necessary. I noticed that 
+      was a difference between the message printed out when the arguments were
+      less than two or greater than four from the reference program. I changed
+      my program to print the same as reference before implementing the same
+      in main. I also created a file - Testcommand_loop.txt - that has
+      commands.
+      In addition to that, I created my own Testpopulate_collabgraph.txt file
+      that, at the beginning had only two artists with their respective songs.
+      In terminal, I deliberately put in a file that wasn't a text file and 
+      the cannot be opened message was printed.
+      
+    - Testing for CollabGraph
+      
+      I tested the CollabGraph functions by creating an instance of a
+      CollabGraph object in TestingCollabGraph.cpp file then called the
+      functions as I implemented them. The file also has some cout statements
+      and some codes commented out - I did this to allow fro clarity when 
+      I tested another function. After passing in artists.txt as one of the 
+      arguments on the command line, I opened the file in 
+      TestingCollabGraph.cpp and after creating the artists, added their songs
+      to the respective Artist object. This paved a way for me to test 
+      the populate_graph function. by calling it and passing in the artists as
+      a parameter. I then called print_graph to cout to confirm that the graph
+      was populated.
+      For the get_vertex_neighbors function, I tested it by passing in one 
+      of the Artists that was put in the graph. For this one, I used 
+      Testpopulate_collabgraph.txt which has less artists and it's easy to 
+      tell an artists' neighbors.
+      I thought of an edge case of what if the artist does not exist in the
+      graph but letter on addressed the problem in the traversals functions
+      
+    _ Testing for command loop 
+    
+      When the program is ran, it basically takes in commands continiously
+      from the terminal and executes them appropriately. In order to test that
+      the program's command loop did this. I tested it by manually putting
+      commands on terminal and by passing a file with commands as an argument
+      on terminal.
+      I came across an edge case - when Testcommand_loop.txt file was empty -
+      no commands in it, my program still printed that " is not a command"
+      eventhopugh space was not in the file. so I made another condition 
+      that when the command was "" do nothing but when the command is " "
+      print out that " " is not a command.
+      Another edge case that I came across was my program not detecting end of
+      file so I made another condition that if it was the end of file, return.
+      Other parts of the command_loop seemed to be working well.
+      I used diff to check it with the reference code.
+      
+    - Testing traversal functions
+        
+      After passing in the command bfs, dfs, or not on terminal, I inputted
+      random names of artists that were not in the graph and the program was
+      able to print the appropriate message for that case.
+      
+      I also passed in the same artist for bfs and dfs and the program
+      printed out the expected message, that the path did not exist.
+      
+      I played around with the artists in Testpopulate_collabgraph.txt file 
+      to check for a path that did not exist and paths that existed.
+      
+      For bfs, I had two artists that had two paths in my testing file but one
+      path was shorter. when I ran it on bfs it worked as expected and it
+      printed out the shortest path. when i did dfs, it printed out the longer
+      path but for dfs, provided it got a path - it was good to go.
+      
+      For the not command, I tested edge cases by having artists that were
+      not part of the graph in the excluded list. At first the program 
+      threw the not artist error - i fixed this by checking that all 
+      the artists in the exclude list were vertices - were on the graph then
+      printed out the appropriate message in the case that they were not.
+    
+QUESTIONS:
+1. What is the difference between BFS and DFS? What are their
+pros/cons?
+
+BFS - Breadth First Search is used to find the shortest path between two 
+vertices/nodes in a graph. It uses a queue (FIFO) data structure, one 
+vertex is selected at a time poped from the queue, marked then its' 
+neighbors stored back to the queue. This makes it slower than DFS but its'
+good because it gets the shortest path.
+
+DFS - Depth First Search is used to find a path between two nodes/vertices.
+It can be implemnted using recursion or the stack data structure (FILO).
+visited vertices are pushed into the stack and if there is no visited 
+vertices, visited vertices are popped. In DFS, it does not necessarily find 
+the shortest path so might traverse through more edges to reach the 
+destination vertex. It is faster than BFS
+
+
+2. State what you think your runtime is for each of the commands
+(excluding quit) commands and why.
+
+For bfs, I think the time complexity is O(V^2) because the neighbors/siblings
+are visited before the children. there is a while loop inside a while loop.
+
+For dfs, I think the time complexity is also O(V^2) but the children are 
+visited before the siblings. It's a recursive function that explores each
+artists then their neighbors.
+
+I think the not command also has O(V^2). It is very similar to bfs only that
+the artists in the list of exclude artists are marked before the traversal
+and the traversal takes more time.
+    
+Time spent:
+
+For phase1:
+
+6 hours
+
+For phase2:
+
+9 hours
